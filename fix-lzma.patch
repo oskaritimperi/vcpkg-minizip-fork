@@ -1,0 +1,63 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index e1a2584..b5014b4 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -163,6 +163,15 @@ if(MZ_BZIP2)
+     endif()
+ endif()
+ 
++if(MZ_LZMA)
++    find_package(LibLZMA)
++    if(LibLZMA_FOUND)
++        message(STATUS "Using LZMA ${LIBLZMA_VERSION_STRING}")
++        list(APPEND MINIZIP_INC ${LibLZMA_INCLUDE_DIRS})
++        list(APPEND MINIZIP_DEF -DHAVE_LZMA)
++    endif()
++endif()
++
+ # Check to see if openssl installation is present
+ if(MZ_OPENSSL)
+     find_package(PkgConfig)
+@@ -520,6 +529,11 @@ endif()
+ 
+ # Include LZMA
+ if(MZ_LZMA)
++    list(APPEND MINIZIP_DEF -DHAVE_LZMA)
++    list(APPEND MINIZIP_SRC "mz_strm_lzma.c")
++    list(APPEND MINIZIP_PUBLIC_HEADERS "mz_strm_lzma.h")
++
++    if(NOT LibLZMA_FOUND)
+     check_include_file(limits.h     HAVE_LIMITS_H)
+     check_include_file(string.h     HAVE_STRING_H)
+     check_include_file(strings.h    HAVE_STRINGS_H)
+@@ -548,12 +562,8 @@ if(MZ_LZMA)
+         list(APPEND MINIZIP_DEF -DHAVE_IMMINTRIN_H)
+     endif()
+ 
+-    list(APPEND MINIZIP_DEF -DHAVE_LZMA)
+     list(APPEND MINIZIP_DEF -DLZMA_API_STATIC)
+ 
+-    list(APPEND MINIZIP_SRC "mz_strm_lzma.c")
+-    list(APPEND MINIZIP_PUBLIC_HEADERS "mz_strm_lzma.h")
+-
+     set(LZMA_CHECK_SRC
+         lib/liblzma/check/check.c
+         lib/liblzma/check/crc32_fast.c
+@@ -652,6 +662,7 @@ if(MZ_LZMA)
+     source_group("LZMA\\LZ" FILES ${LZMA_LZ_SRC} ${LZMA_LZ_HEADERS})
+     source_group("LZMA\\LZMA" FILES ${LZMA_LZMA_SRC} ${LZMA_LZMA_HEADERS})
+     source_group("LZMA\\RangeCoder" FILES ${LZMA_RANGECODER_SRC} ${LZMA_RANGECODER_HEADERS})
++    endif()
+ endif()
+ 
+ macro(mz_configure_target target)
+@@ -746,6 +757,9 @@ endif()
+ if(MZ_BZIP2 AND BZIP2_FOUND)
+     target_link_libraries(${PROJECT_NAME} ${BZIP2_LIBRARIES})
+ endif()
++if(MZ_LZMA AND LibLZMA_FOUND)
++    target_link_libraries(${PROJECT_NAME} ${LibLZMA_LIBRARIES})
++endif()
+ if(MZ_LIBCOMP)
+     target_link_libraries(${PROJECT_NAME} compression)
+ endif()

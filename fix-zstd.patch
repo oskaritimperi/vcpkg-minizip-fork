@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a6deb4c..e1a2584 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -732,7 +732,7 @@ if(MZ_ZLIB AND NOT MZ_LIBCOMP)
+ endif()
+ if(MZ_ZSTD)
+     if(ZSTD_FOUND)
+-        target_link_libraries(${PROJECT_NAME} ${ZSTD_LIBRARIES})
++        target_link_libraries(${PROJECT_NAME} libzstd)
+     else()
+         # Have to add zlib to install targets
+         if(NOT DEFINED BUILD_SHARED_LIBS OR NOT ${BUILD_SHARED_LIBS})

@@ -1,0 +1,53 @@
+Source: minizipfork
+Version: 2.10.0
+Port-Version: 1
+Homepage: https://github.com/nmoinvaz/minizip
+Description: minizip is a zip manipulation library written in C that is supported on Windows, macOS, and Linux.
+Default-Features: compat, zlib, bzip2, lzma, zstd, pkcrypt, wzaes, signing
+
+Feature: compat
+Description: Enables compatibility layer
+
+Feature: zlib
+Description: Enables ZLIB compression
+Build-Depends: zlib
+
+Feature: bzip2
+Description: Enables BZIP2 compression
+Build-Depends: bzip2
+
+Feature: lzma
+Description: Enables LZMA compression
+Build-Depends: liblzma
+
+Feature: zstd
+Description: Enables ZSTD compression
+Build-Depends: zstd
+
+Feature: pkcrypt
+Description: Enables PKWARE traditional encryption
+
+Feature: wzaes
+Description: Enables WinZIP AES encryption
+
+Feature: libcomp
+Description: Enables Apple compression
+
+Feature: openssl
+Description: Enables OpenSSL for encryption
+Build-Depends: openssl
+
+Feature: brg
+Description: Enables Brian Gladman's encryption library
+
+Feature: signing
+Description: Enables zip signing support
+
+Feature: compress_only
+Description: Only support compression
+
+Feature: decompress_only
+Description: Only support decompression
+
+Feature: file32_api
+Description: Builds using posix 32-bit file api
